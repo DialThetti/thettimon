@@ -1,8 +1,8 @@
-import { Event } from 'src/map';
-import { OnUpdate } from '../core/gameloop/onupdate';
-import { Store } from '../core/redux/store';
-import { getGameState, getMap, getPlayer, getPlayerPosition } from './store/selectors';
-import { GameState, State } from './store/state';
+import { Event } from '@game/map';
+import { OnUpdate } from '../../../core/gameloop/onupdate';
+import { Store } from '../../../core/redux/store';
+import { getGameState, getMap, getPlayer, getPlayerPosition } from '../../store/selectors';
+import { GameState, State } from '../../store/state';
 
 export const keys: { [key: string]: { pressed: boolean } } = {
   w: { pressed: false },
@@ -95,7 +95,6 @@ export class Controls implements OnUpdate {
     if (this.store.select(getMap).getEvent(this.store.select(getPlayerPosition)) === Event.BATTLE_ZONE_1) {
       if (Math.random() < 1 / 10) {
         this.store.apply({ gameState: GameState.TRANSITION });
-        console.log('grass');
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Sprite } from 'src/sprite';
+import { Sprite } from '@core/render/sprite';
 
 export const loadImage = (url: string): Promise<HTMLImageElement> =>
   new Promise(e => {

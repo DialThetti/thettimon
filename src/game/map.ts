@@ -1,4 +1,4 @@
-import { IPoint, Point } from './point';
+import { IPoint } from '../core/point';
 
 export enum Event {
   NONE = 0,

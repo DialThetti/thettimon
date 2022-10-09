@@ -1,5 +1,5 @@
-import { Map } from 'src/map';
-import { Point } from 'src/point';
+import { Map } from '@game/map';
+import { Point } from '@core/point';
 
 export interface State {
   player: { position: Point; dir: string; ticker: number };

@@ -1,4 +1,4 @@
-import { OnRender } from './core/gameloop/onrender';
+import { OnRender } from '@core/gameloop/onrender';
 
 export class FPSLayer implements OnRender {
   constructor(private date = new Date().valueOf(), private count = 0, private lastFps = 0) {}

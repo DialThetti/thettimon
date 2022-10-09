@@ -1,7 +1,7 @@
-import { OnRender } from 'src/core/gameloop/onrender';
-import { OnUpdate } from 'src/core/gameloop/onupdate';
-import { loadImage } from 'src/core/loaders';
-import { Store } from 'src/core/redux/store';
+import { OnRender } from '@core/gameloop/onrender';
+import { OnUpdate } from '@core/gameloop/onupdate';
+import { loadImage } from '@core/loaders';
+import { Store } from '@core/redux/store';
 import { getGameState } from './store/selectors';
 import { GameState, State } from './store/state';
 
@@ -25,7 +25,6 @@ export class TransitionLayer implements OnRender, OnUpdate {
   constructor(private store: Store<State>) {}
   async load() {
     for (const t in this.transisitons) {
-      console.log(t);
       const transitionAnimation = await loadImage(this.transisitons[t]);
       const o = document.createElement('canvas');
       o.width = transitionAnimation.width;
@@ -42,7 +41,6 @@ export class TransitionLayer implements OnRender, OnUpdate {
     if (this.store.select(getGameState) && this.ticker < 1 + sleepAfter) {
       this.ticker += 1 / 120;
     } else if (this.ticker > 1 + sleepAfter) {
-      console.log('go');
       this.ticker = 0;
       this.store.apply({ gameState: GameState.BATTLE });
     } else {

@@ -52,7 +52,8 @@
         // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
         "baseUrl": ".",
         "paths": {
-           
+           "@core/*":["src/core/*"],
+           "@game/*":["src/game/*"],
         }
     },
     "include": [

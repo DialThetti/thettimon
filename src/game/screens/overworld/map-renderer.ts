@@ -1,11 +1,11 @@
-import { OnRender } from 'src/core/gameloop/onrender';
-import { loadImage, loadResources } from 'src/core/loaders';
-import { Map } from 'src/map';
-import { Point } from 'src/point';
-import { Sprite } from 'src/sprite';
-import { Store } from 'src/core/redux/store';
-import { getGameState, getPlayer, getPlayerPosition } from './store/selectors';
-import { GameState, State } from './store/state';
+import { OnRender } from '@core/gameloop/onrender';
+import { loadImage, loadResources } from '@core/loaders';
+import { Map } from '@game/map';
+import { Point } from '@core/point';
+import { Sprite } from '@core/render/sprite';
+import { Store } from '@core/redux/store';
+import { getGameState, getPlayer, getPlayerPosition } from '../../store/selectors';
+import { GameState, State } from '../../store/state';
 
 const WIDTH = 240 * 2;
 const HEIGHT = 160 * 2;
