@@ -3,7 +3,9 @@ import { loadImage, loadResources } from 'src/core/loaders';
 import { Map } from 'src/map';
 import { Point } from 'src/point';
 import { Sprite } from 'src/sprite';
-import { Store } from 'src/store';
+import { Store } from 'src/core/redux/store';
+import { getGameState, getPlayer, getPlayerPosition } from './store/selectors';
+import { GameState, State } from './store/state';
 
 const WIDTH = 240 * 2;
 const HEIGHT = 160 * 2;
@@ -15,7 +17,7 @@ export class MapRenderer implements OnRender {
   map!: Map;
 
   offset = new Point(WIDTH / 2 - 32, HEIGHT / 2 - 16);
-  constructor(private store: Store) {}
+  constructor(private store: Store<State>) {}
   async load() {
     [this.background, this.foreground] = await loadResources();
     this.playerImg = await loadImage('./img/player.png');
@@ -26,11 +28,18 @@ export class MapRenderer implements OnRender {
   onRender(ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    this.background.draw(ctx, this.store.player.position.scale(-32).translate(this.offset));
-    const imgPos = this.playerDir(this.store.player);
+    this.background.draw(ctx, this.store.select(getPlayerPosition).scale(-32).translate(this.offset).floor());
+    const imgPos = this.playerDir(this.store.select(getPlayer));
     ctx.drawImage(this.playerImg, imgPos.x, imgPos.y, 32, 32, WIDTH / 2 - 32, HEIGHT / 2 - 16, 32, 32);
 
-    this.foreground.draw(ctx, this.store.player.position.scale(-32).translate(this.offset));
+    this.foreground.draw(ctx, this.store.select(getPlayerPosition).scale(-32).translate(this.offset).floor());
+  }
+
+  isActive(): boolean {
+    return (
+      this.store.select(getGameState) === GameState.TRANSITION ||
+      this.store.select(getGameState) === GameState.OVERWORLD
+    );
   }
 
   playerDir = (player: { ticker: number; dir: string }) => {

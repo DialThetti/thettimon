@@ -1,7 +1,9 @@
 import { OnRender } from 'src/core/gameloop/onrender';
 import { OnUpdate } from 'src/core/gameloop/onupdate';
 import { loadImage } from 'src/core/loaders';
-import { Store } from 'src/store';
+import { Store } from 'src/core/redux/store';
+import { getGameState } from './store/selectors';
+import { GameState, State } from './store/state';
 
 const WIDTH = 240 * 2;
 const HEIGHT = 160 * 2;
@@ -20,7 +22,7 @@ export class TransitionLayer implements OnRender, OnUpdate {
   originals: HTMLCanvasElement[] = [];
   buffer: HTMLCanvasElement = document.createElement('canvas');
   currentTranslation = 0;
-  constructor(private store: Store) {}
+  constructor(private store: Store<State>) {}
   async load() {
     for (const t in this.transisitons) {
       console.log(t);
@@ -34,15 +36,15 @@ export class TransitionLayer implements OnRender, OnUpdate {
   }
   onUpdate(): void {
     const sleepAfter = 0.2;
-    if (this.store.inBattle && this.ticker == 0) {
+    if (this.store.select(getGameState) && this.ticker == 0) {
       this.currentTranslation = Math.floor(Math.random() * this.originals.length);
     }
-    if (this.store.inBattle && this.ticker < 1 + sleepAfter) {
+    if (this.store.select(getGameState) && this.ticker < 1 + sleepAfter) {
       this.ticker += 1 / 120;
     } else if (this.ticker > 1 + sleepAfter) {
       console.log('go');
       this.ticker = 0;
-      this.store.inBattle = false;
+      this.store.apply({ gameState: GameState.BATTLE });
     } else {
       this.ticker = 0;
     }
@@ -53,6 +55,10 @@ export class TransitionLayer implements OnRender, OnUpdate {
       //
       ctx.drawImage(this.filterByGreyscale(o), 0, 0, o.width, o.height, 0, 0, WIDTH, HEIGHT);
     }
+  }
+
+  isActive(): boolean {
+    return this.store.select(getGameState) === GameState.TRANSITION;
   }
 
   filterByGreyscale(sourceImageData: HTMLCanvasElement): HTMLCanvasElement {

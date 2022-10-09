@@ -15,4 +15,8 @@ export class FPSLayer implements OnRender {
     }
     this.count++;
   }
+
+  isActive(): boolean {
+    return true;
+  }
 }
