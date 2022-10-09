@@ -15,11 +15,11 @@ export class GameLoop implements OnUpdate, OnRender {
     this.renderers = config.renderers;
   }
   onUpdate(): void {
-    this.updaters.forEach(r => r.onUpdate());
+    this.updaters.filter(u => u.isActive()).forEach(u => u.onUpdate());
   }
 
   onRender(ctx: CanvasRenderingContext2D): void {
-    this.renderers.forEach(r => r.onRender(ctx));
+    this.renderers.filter(r => r.isActive()).forEach(r => r.onRender(ctx));
   }
   gameLoop(): void {
     const f = () => {
@@ -31,6 +31,9 @@ export class GameLoop implements OnUpdate, OnRender {
     f();
   }
 
+  isActive(): boolean {
+    return true;
+  }
   start(id: string): void {
     const canvas = document.querySelector(`#${id}`) as HTMLCanvasElement;
     this.c2d = canvas.getContext('2d') as CanvasRenderingContext2D;

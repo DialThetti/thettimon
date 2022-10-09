@@ -4,14 +4,15 @@ import { FPSLayer } from './fps';
 
 import { MapRenderer } from './game/map-renderer';
 import { Map } from './map';
-import { Store } from './store';
+import { Store } from './core/redux/store';
 import { TransitionLayer } from './game/transition';
+import { GameState, initialState, State } from './game/store/state';
 
-const store = new Store();
+const store = new Store<State>(initialState);
 const main = async () => {
   const map = new Map();
   await map.load();
-  store.map = map;
+  store.apply({ map });
   const controls = new Controls(store);
   const mapRenderer = new MapRenderer(store);
   await mapRenderer.load();
@@ -25,5 +26,5 @@ const main = async () => {
 main();
 
 (window as any).transition = () => {
-  store.inBattle = true;
+  store.apply({ gameState: GameState.TRANSITION });
 };
