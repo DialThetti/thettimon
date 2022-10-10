@@ -11,7 +11,7 @@ import { BattleRenderer } from '@game/screens/battle/battle-renderer';
 
 const store = new Store<State>(initialState);
 const main = async () => {
-  const map = new Map();
+  const map = new Map('route1');
   await map.load();
   store.apply({ map });
   const controls = new Controls(store);

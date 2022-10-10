@@ -1,0 +1,14 @@
+{ "columns":24,
+ "image":"..\/..\/elv games\/RGW Overworld\/16x16\/RGW_Overworld_Complete.png",
+ "imageheight":512,
+ "imagewidth":384,
+ "margin":0,
+ "name":"RGW_Overworld_Complete",
+ "spacing":0,
+ "tilecount":768,
+ "tiledversion":"1.5.0",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":1.5
+}

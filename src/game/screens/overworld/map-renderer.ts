@@ -1,14 +1,15 @@
 import { OnRender } from '@core/gameloop/onrender';
-import { loadImage, loadResources } from '@core/loaders';
+import { loadImage } from '@core/loaders';
 import { Map } from '@game/map';
 import { Point } from '@core/point';
 import { Sprite } from '@core/render/sprite';
 import { Store } from '@core/redux/store';
-import { getGameState, getPlayer, getPlayerPosition } from '../../store/selectors';
+import { getGameState, getMap, getPlayer, getPlayerPosition } from '../../store/selectors';
 import { GameState, State } from '../../store/state';
+import { SCREEN_RES } from '@game/constants';
 
-const WIDTH = 240 * 2;
-const HEIGHT = 160 * 2;
+const loadResources = async (map: Map): Promise<Sprite[]> =>
+  (await Promise.all([loadImage(map.getBackgroundUrl()), loadImage(map.getFrontUrl())])).map(img => new Sprite(img));
 
 export class MapRenderer implements OnRender {
   background!: Sprite;
@@ -16,23 +17,31 @@ export class MapRenderer implements OnRender {
   playerImg!: HTMLImageElement;
   map!: Map;
 
-  offset = new Point(WIDTH / 2 - 32, HEIGHT / 2 - 16);
+  offset = new Point(SCREEN_RES.width / 2 - 12, SCREEN_RES.height / 2 - 12);
   constructor(private store: Store<State>) {}
   async load() {
-    [this.background, this.foreground] = await loadResources();
+    [this.background, this.foreground] = await loadResources(this.store.select(getMap));
     this.playerImg = await loadImage('./img/player.png');
-    this.map = new Map();
-    await this.map.load();
   }
 
   onRender(ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    this.background.draw(ctx, this.store.select(getPlayerPosition).scale(-32).translate(this.offset).floor());
+    ctx.fillRect(0, 0, SCREEN_RES.width, SCREEN_RES.height);
+    this.background.draw(ctx, this.store.select(getPlayerPosition).scale(-16).translate(this.offset).floor());
     const imgPos = this.playerDir(this.store.select(getPlayer));
-    ctx.drawImage(this.playerImg, imgPos.x, imgPos.y, 32, 32, WIDTH / 2 - 32, HEIGHT / 2 - 16, 32, 32);
+    ctx.drawImage(
+      this.playerImg,
+      imgPos.x,
+      imgPos.y,
+      24,
+      24,
+      SCREEN_RES.width / 2 - 12 - 4,
+      SCREEN_RES.height / 2 - 24 + 4,
+      24,
+      24
+    );
 
-    this.foreground.draw(ctx, this.store.select(getPlayerPosition).scale(-32).translate(this.offset).floor());
+    this.foreground.draw(ctx, this.store.select(getPlayerPosition).scale(-16).translate(this.offset).floor());
   }
 
   isActive(): boolean {
@@ -43,16 +52,17 @@ export class MapRenderer implements OnRender {
   }
 
   playerDir = (player: { ticker: number; dir: string }) => {
+    const step = [24, 48, 24, 0][Math.floor(4 * (1 - player.ticker ?? 1))];
     switch (player.dir) {
       case 'down':
       default:
-        return { x: 32 * Math.floor(4 * (1 - player.ticker ?? 1)), y: 0 };
-      case 'up':
-        return { x: 32 * Math.floor(4 * (1 - player.ticker ?? 1)), y: 32 };
-      case 'right':
-        return { x: 32 * Math.floor(4 * (1 - player.ticker ?? 1)), y: 64 };
+        return { x: step, y: 0 };
       case 'left':
-        return { x: 32 * Math.floor(4 * (1 - player.ticker ?? 1)), y: 96 };
+        return { x: step, y: 24 };
+      case 'right':
+        return { x: step, y: 24 * 2 };
+      case 'up':
+        return { x: step, y: 24 * 3 };
     }
   };
 }

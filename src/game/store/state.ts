@@ -13,7 +13,7 @@ export enum GameState {
 }
 
 export const initialState: State = {
-  player: { position: new Point(4, 4), dir: 'down', ticker: 1 },
-  map: new Map(),
+  player: { position: new Point(13, 23), dir: 'down', ticker: 1 },
+  map: new Map(''),
   gameState: GameState.OVERWORLD,
 };

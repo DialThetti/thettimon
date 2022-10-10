@@ -2,11 +2,10 @@ import { OnRender } from '@core/gameloop/onrender';
 import { OnUpdate } from '@core/gameloop/onupdate';
 import { loadImage } from '@core/loaders';
 import { Store } from '@core/redux/store';
+import { SCREEN_RES } from './constants';
 import { getGameState } from './store/selectors';
 import { GameState, State } from './store/state';
 
-const WIDTH = 240 * 2;
-const HEIGHT = 160 * 2;
 export class TransitionLayer implements OnRender, OnUpdate {
   transisitons: string[] = [
     'transitions/hexatrc.png',
@@ -51,7 +50,7 @@ export class TransitionLayer implements OnRender, OnUpdate {
     if (this.ticker > 0) {
       const o = this.originals[this.currentTranslation];
       //
-      ctx.drawImage(this.filterByGreyscale(o), 0, 0, o.width, o.height, 0, 0, WIDTH, HEIGHT);
+      ctx.drawImage(this.filterByGreyscale(o), 0, 0, o.width, o.height, 0, 0, SCREEN_RES.width, SCREEN_RES.height);
     }
   }
 

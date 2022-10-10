@@ -1,14 +1,20 @@
-{ "columns":4,
+{ "columns":2,
+ "grid":
+    {
+     "height":16,
+     "orientation":"orthogonal",
+     "width":16
+    },
  "image":"events.png",
- "imageheight":128,
- "imagewidth":128,
+ "imageheight":64,
+ "imagewidth":64,
  "margin":0,
  "name":"events",
  "spacing":0,
- "tilecount":16,
+ "tilecount":4,
  "tiledversion":"1.5.0",
- "tileheight":32,
- "tilewidth":32,
+ "tileheight":16,
+ "tilewidth":16,
  "type":"tileset",
  "version":1.5
 }

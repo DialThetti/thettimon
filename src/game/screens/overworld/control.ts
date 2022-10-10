@@ -26,7 +26,7 @@ const keyUp = (e: KeyboardEvent) => {
 
 export class Controls implements OnUpdate {
   private updateRequest: { type: string; ticker: number } | undefined = undefined;
-  playerSpeed = 1 / 32;
+  playerSpeed = 1 / 24;
   constructor(private store: Store<State>) {}
   listen(): void {
     window.onkeydown = keyDown;
@@ -55,6 +55,8 @@ export class Controls implements OnUpdate {
       this.store.select(getPlayer).ticker = this.updateRequest.ticker;
       this.updateRequest.ticker -= this.playerSpeed;
       if (this.updateRequest.ticker <= 0) {
+        this.store.select(getPlayerPosition).x = Math.round(this.store.select(getPlayerPosition).x);
+        this.store.select(getPlayerPosition).y = Math.round(this.store.select(getPlayerPosition).y);
         this.updateRequest = undefined;
         this.store.select(getPlayer).ticker = 1;
         this.triggerEvent();

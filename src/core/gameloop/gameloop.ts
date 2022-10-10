@@ -1,9 +1,7 @@
+import { SCREEN_RES } from '@game/constants';
 import { createRenderContext } from '../util';
 import { OnRender } from './onrender';
 import { OnUpdate } from './onupdate';
-
-const WIDTH = 240 * 2;
-const HEIGHT = 160 * 2;
 
 export class GameLoop implements OnUpdate, OnRender {
   private updaters: OnUpdate[] = [];
@@ -26,7 +24,17 @@ export class GameLoop implements OnUpdate, OnRender {
       window.requestAnimationFrame(f);
       this.onUpdate();
       this.onRender(this.c2d);
-      this.c2d.drawImage(this.screen.canvas, 0, 0, WIDTH, HEIGHT, 0, 0, this.c2d.canvas.width, this.c2d.canvas.height);
+      this.c2d.drawImage(
+        this.screen.canvas,
+        0,
+        0,
+        SCREEN_RES.width,
+        SCREEN_RES.height,
+        0,
+        0,
+        this.c2d.canvas.width,
+        this.c2d.canvas.height
+      );
     };
     f();
   }
@@ -37,9 +45,10 @@ export class GameLoop implements OnUpdate, OnRender {
   start(id: string): void {
     const canvas = document.querySelector(`#${id}`) as HTMLCanvasElement;
     this.c2d = canvas.getContext('2d') as CanvasRenderingContext2D;
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-    this.screen = createRenderContext(WIDTH, HEIGHT);
+    this.c2d.imageSmoothingEnabled = false;
+    canvas.width = SCREEN_RES.width;
+    canvas.height = SCREEN_RES.height;
+    this.screen = createRenderContext(SCREEN_RES.width, SCREEN_RES.height);
     this.gameLoop();
   }
 }

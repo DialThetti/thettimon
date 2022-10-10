@@ -1,0 +1,14 @@
+{ "columns":69,
+ "image":"..\/Minifantasy_ForgottenPlains_Assets\/Tileset\/Minifantasy_ForgottenPlainsTiles.png",
+ "imageheight":184,
+ "imagewidth":552,
+ "margin":0,
+ "name":"8x8",
+ "spacing":0,
+ "tilecount":1587,
+ "tiledversion":"1.5.0",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":1.5
+}

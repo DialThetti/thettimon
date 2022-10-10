@@ -1,0 +1,22 @@
+{ "columns":21,
+ "image":"..\/..\/elv games\/RGW Overworld\/16x16\/RGW_Overworld_Brushes.png",
+ "imageheight":320,
+ "imagewidth":336,
+ "margin":0,
+ "name":"RGW_Overworld_Brushes",
+ "spacing":0,
+ "tilecount":420,
+ "tiledversion":"1.5.0",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":1.5,
+ "wangsets":[
+        {
+         "colors":[],
+         "name":"Unnamed Set",
+         "tile":-1,
+         "type":"mixed",
+         "wangtiles":[]
+        }]
+}
